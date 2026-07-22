@@ -9,7 +9,9 @@
   A proposal: {:op :draft-training-plan|:record-completion|:send-invitations
                :effect :propose :module-ids [str ...] :total-hours n
                :stake kw :confidence n :rationale str}"
-  (:require [training.store :as store]))
+  (:require [training.store :as store]
+            #?(:clj [clojure.edn :as edn]
+               :cljs [cljs.reader :as edn])))
 
 (defprotocol Advisor
   (-advise [advisor store request] "request -> proposal map"))
@@ -43,7 +45,7 @@
 
 (defn- parse-proposal [content]
   (try
-    (let [p (read-string content)]
+    (let [p (edn/read-string content)]
       (if (map? p)
         (assoc p :effect :propose)
         {:op :unknown :effect :propose :confidence 0.0 :stake :high
