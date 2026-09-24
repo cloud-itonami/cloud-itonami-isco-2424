@@ -1,0 +1,33 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:physics` runs it.
+;;
+;; ISCO 2424, training and staff development professionals. The README calls this pure-cognitive work with no robotics
+;; gate; blueprint.edn nevertheless declares :itonami.blueprint/robotics true.
+;; The physical work declared here is the handling the occupation itself
+;; entails (ASSUMPTION, not stated in the README): wheeling stacked training-room chairs on a dolly to set up a session, and placing the trainer's laptop/projector kit on the lectern.
+;; Replace with the README premise once one is written.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isco-2424"
+ :cases
+ [{:id :chair-stack-dolly
+   :kind :transport
+   :procedure "AMR pushes a dolly of stacked training-room chairs from storage into the training room"
+   :params {:mass-kg 50.0 :distance-m 30.0 :v-max-mps 0.8 :a-max-mps2 0.4
+            :brake-decel-mps2 0.5 :drive-force-n 90.0 :crr 0.03
+            :cog-height-m 0.80 :support-half-length-m 0.30}
+   :sweep {:param :payload-kg :values [35.0 70.0 105.0 140.0 175.0]}
+   :quantity :cycle-time-s
+   :limit {:max 50.0 :basis "estimate: a stack every 50 s lets one robot seat a 30-person session within the 15-minute room turnover"}
+   :boundary {:lo 5.0 :hi 300.0}}
+  {:id :trainer-kit-to-lectern
+   :kind :manipulator
+   :procedure "arm lifts the trainer's laptop and portable projector kit from the cart onto the lectern"
+   :params {:l1-m 0.45 :l2-m 0.40 :m1-kg 3.5 :m2-kg 2.5
+            :from [0.50 -0.25] :to [0.40 0.40] :duration-s 2.0 :steps 500}
+   :sweep {:param :payload-kg :values [1.0 2.5 4.0 6.0 8.0]}
+   :quantity :peak-tau1-nm
+   :limit {:max 60.0 :basis "estimate: continuous shoulder torque of a light collaborative arm (~5 kg class)"}
+   :boundary {:lo 0.1 :hi 30.0}}]}
