@@ -1,7 +1,7 @@
 (ns training.governor
   "TrainingGovernor — the independent safety/traceability layer for the
   ISCO-08 2424 community training actor (itonami actor pattern,
-  ADR-2607011000 / CLAUDE.md Actors section). Modeled on
+  ADR-2607011000 / AGENTS.md Actors section). Modeled on
   cloud-itonami-isco-4311's bookkeeping.governor. The training-specific
   twist: a training plan is validated DETERMINISTICALLY against the
   registered curriculum — module existence, prerequisite ordering and
